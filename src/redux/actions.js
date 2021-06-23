@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const GET_MOVIES = 'FETCH_MOVIES';
+export const SET_SEARCH_STRING = 'SET_SEARCH_STRING';
 
 const API_URL = 'https://www.omdbapi.com/';
 const API_KEY = 'a1c1d7fe';
@@ -23,4 +24,11 @@ export const getMovies = (serchString, page = 1) => {
   } catch (error) {
       console.log('error',error);
   }
+};
+
+export const setSearchString = (searchString) => (dispatch) => {
+  dispatch({
+    type: SET_SEARCH_STRING,
+    payload: searchString,
+  });
 };

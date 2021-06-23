@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getMovies, addFavorite, removeFavorite } from '../../redux/actions';
+import { getMovies, setSearchString } from '../../redux/actions';
 
-const Main = () => {
+const Main = (props) => {
+  console.log('Main', props);
   const dispatch = useDispatch();
-  const fetchMovies = () => dispatch(getMovies('123'));
+  const fetchMovies = () => dispatch(getMovies(result));
+  const setStringSearch = (data) => dispatch(setSearchString(data))
+
+  const [result, setResult] = useState('');
 
   const handleInput = (text) => {
-    console.log('text', text);
+    setResult(text);
   };
   return (
     <SafeAreaView>
@@ -43,12 +47,17 @@ const Main = () => {
           placeholder='Введите название'
           containerStyle={{ width: '80%', marginVertical: 20 }}
           onChangeText={handleInput}
+          value={result}
+          onBlur={()=>{
+            setStringSearch(result)
+          }}
         />
         <Button
           title='Найти'
           containerStyle={{ width: '80%', marginVertical: 20 }}
           onPress={() => {
             fetchMovies();
+            props.navigation.navigate('List');
           }}
         />
       </View>
