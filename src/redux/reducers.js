@@ -1,14 +1,16 @@
-import { GET_MOVIES } from './actions';
+import { GET_MOVIES, SET_SEARCH_STRING } from './actions';
 
 const initialState = {
   movies: [],
-  favorites: [],
+  searchString: '',
 };
 
 function moviesReducer(state = initialState, action) {
   switch (action.type) {
     case GET_MOVIES:
       return { ...state, movies: action.payload };
+    case SET_SEARCH_STRING:
+      return { ...state, searchString: action.payload };
     default:
       return state;
   }
