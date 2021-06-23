@@ -1,58 +1,51 @@
-import React, { useEffect } from 'react';
-import { SafeAreaView, Text, View, FlatList, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  SafeAreaView,
+  Text,
+  View,
+  FlatList,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { getMovies, setSearchString } from '../../redux/actions';
+import RequestLoader from '../../components/RequestLoader';
+const noImg = require('../../../assets/not-available.png');
 
-const mock = [
-  {
-    Poster:
-      'https://m.media-amazon.com/images/M/MV5BMTkxNzI3ODI4Nl5BMl5BanBnXkFtZTgwMjkwMjY4MjE@._V1_SX300.jpg',
-    Title: 'American Sniper',
-    Type: 'movie',
-    Year: '2014',
-    imdbID: 'tt2179136',
-  },
-  {
-    Poster:
-      'https://m.media-amazon.com/images/M/MV5BZWUzOGNjMzItZmM5MC00NTQzLTk3YjQtZWMwZmRhOGJhZDczXkEyXkFqcGdeQXVyNzc5MjA3OA@@._V1_SX300.jpg',
-    Title: 'Sniper',
-    Type: 'movie',
-    Year: '1993',
-    imdbID: 'tt0108171',
-  },
-  {
-    Poster:
-      'https://m.media-amazon.com/images/M/MV5BMTkxNzI3ODI4Nl5BMl5BanBnXkFtZTgwMjkwMjY4MjE@._V1_SX300.jpg',
-    Title: 'American Sniper',
-    Type: 'movie',
-    Year: '2014',
-    imdbID: 'tt2179136',
-  },
-  {
-    Poster:
-      'https://m.media-amazon.com/images/M/MV5BZWUzOGNjMzItZmM5MC00NTQzLTk3YjQtZWMwZmRhOGJhZDczXkEyXkFqcGdeQXVyNzc5MjA3OA@@._V1_SX300.jpg',
-    Title: 'Sniper',
-    Type: 'movie',
-    Year: '1993',
-    imdbID: 'tt0108171',
-  },
-];
+const DEFAULT_IMAGE = Image.resolveAssetSource(noImg).uri;
 
-const List = () => {
-  const temp = useSelector((state) => state.moviesReducer);
-  console.log(temp);
+const List = (props) => {
+  console.log('List', props);
+  const state = useSelector((state) => state.moviesReducer);
+  console.log(state);
+  const dispatch = useDispatch();
+  const fetchMovies = () =>
+    dispatch(getMovies(state.searchString, state.movies.length / 10 + 1));
+  const [showLoader, setShowLoader] = useState(false);
   useEffect(() => {
-    console.log('qweqweqwe', temp);
-  }, [temp]);
+    setShowLoader(false);
+  }, [state.movies]);
+
   const renderItem = (props) => {
     console.log('renderItem', props);
     return (
-      <View style={{alignSelf: 'center', marginVertical: 20, padding: 20, borderWidth: 1, borderRadius: 8}}>
-        <Text style={{textAlign: 'center',marginBottom: 15}}>{props.item.Title} <Text>{props.item.Year}</Text></Text>
+      <View
+        style={{
+          alignSelf: 'center',
+          marginVertical: 20,
+          padding: 20,
+          borderWidth: 1,
+          borderRadius: 8,
+        }}
+      >
+        <Text style={{ textAlign: 'center', marginBottom: 15, width: 250 }}>
+          {props.item.Title} <Text>{props.item.Year}</Text>
+        </Text>
         <Image
-          style={{height: 250, width: 250, borderRadius: 8}}
-          source={{
-            uri: props.item.Poster,
-          }}
+          style={{ height: 250, width: 250, borderRadius: 8 }}
+          source={
+            props.item.Poster !== 'N/A' ? { uri: props.item.Poster } : noImg
+          }
         />
       </View>
     );
@@ -60,13 +53,37 @@ const List = () => {
 
   return (
     <SafeAreaView>
-      <View >
-        {/* <Text>List</Text> */}
-        <FlatList
-          data={mock}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
+      <View>
+        {!state.loading ? (
+          (state.movies && state.movies.length) ? (
+            <FlatList
+              data={state.movies}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index}
+              ListFooterComponent={<RequestLoader showLoader={showLoader} />}
+              onEndReachedThreshold={0.5}
+              onEndReached={async () => {
+                setShowLoader(true);
+                console.log('NEXT', state.totalResults / 10);
+                console.log('NEXT', state.movies.length / 10 + 1);
+                if (state.totalResults / 10 > state.movies.length / 10 + 1) {
+                  console.log('ZAPROS');
+                  fetchMovies();
+                } else {
+                  setShowLoader(false);
+                }
+              }}
+            />
+          ) : (
+            <View style={{ height: '100%', justifyContent: 'center' }}>
+              <Text style={{ textAlign: 'center' }}>Нет Результатов</Text>
+            </View>
+          )
+        ) : (
+          <View style={{ height: '100%', justifyContent: 'center' }}>
+            <ActivityIndicator size='large' color='black' />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
