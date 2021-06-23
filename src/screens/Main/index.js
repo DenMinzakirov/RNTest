@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { getMovies, addFavorite, removeFavorite } from '../../redux/actions';
 
 const Main = () => {
+  const dispatch = useDispatch();
+  const fetchMovies = () => dispatch(getMovies('123'));
+
+  const handleInput = (text) => {
+    console.log('text', text);
+  };
   return (
     <SafeAreaView>
       <View
@@ -11,12 +20,10 @@ const Main = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'red',
         }}
       >
         <Text
           style={{
-            backgroundColor: 'yellow',
             textAlign: 'center',
             marginVertical: 20,
           }}
@@ -25,7 +32,6 @@ const Main = () => {
         </Text>
         <Text
           style={{
-            backgroundColor: 'yellow',
             textAlign: 'center',
             marginHorizontal: 20,
             marginVertical: 20,
@@ -36,10 +42,14 @@ const Main = () => {
         <Input
           placeholder='Введите название'
           containerStyle={{ width: '80%', marginVertical: 20 }}
+          onChangeText={handleInput}
         />
         <Button
           title='Найти'
           containerStyle={{ width: '80%', marginVertical: 20 }}
+          onPress={() => {
+            fetchMovies();
+          }}
         />
       </View>
     </SafeAreaView>
