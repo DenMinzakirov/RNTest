@@ -6,10 +6,18 @@ import {
   FlatList,
   Image,
   ActivityIndicator,
+  Modal,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { getMovies, setSearchString } from '../../redux/actions';
+import {
+  getMovies,
+  setSearchString,
+  setModalData,
+  hideModalData,
+} from '../../redux/actions';
 import RequestLoader from '../../components/RequestLoader';
+import Item from '../../components/Item';
 const noImg = require('../../../assets/not-available.png');
 
 const DEFAULT_IMAGE = Image.resolveAssetSource(noImg).uri;
@@ -17,46 +25,25 @@ const DEFAULT_IMAGE = Image.resolveAssetSource(noImg).uri;
 const List = (props) => {
   console.log('List', props);
   const state = useSelector((state) => state.moviesReducer);
+  console.log('state', state);
   const dispatch = useDispatch();
   const fetchMovies = () =>
     dispatch(getMovies(state.searchString, state.movies.length / 10 + 1));
   const [showLoader, setShowLoader] = useState(false);
+  const showModal = (data) => dispatch(setModalData(data));
+  const hideModal = (data) => dispatch(hideModalData());
   useEffect(() => {
     setShowLoader(false);
   }, [state.movies]);
-
-  const renderItem = (props) => {
-    return (
-      <View
-        style={{
-          alignSelf: 'center',
-          marginVertical: 20,
-          padding: 20,
-          borderWidth: 1,
-          borderRadius: 8,
-        }}
-      >
-        <Text style={{ textAlign: 'center', marginBottom: 15, width: 250 }}>
-          {props.item.Title} <Text>{props.item.Year}</Text>
-        </Text>
-        <Image
-          style={{ height: 250, width: 250, borderRadius: 8 }}
-          source={
-            props.item.Poster !== 'N/A' ? { uri: props.item.Poster } : noImg
-          }
-        />
-      </View>
-    );
-  };
 
   return (
     <SafeAreaView>
       <View>
         {!state.loading ? (
-          (state.movies && state.movies.length) ? (
+          state.movies && state.movies.length ? (
             <FlatList
               data={state.movies}
-              renderItem={renderItem}
+              renderItem={(props) => <Item {...props} showModal={showModal} />}
               keyExtractor={(item, index) => index}
               ListFooterComponent={<RequestLoader showLoader={showLoader} />}
               onEndReachedThreshold={0.5}
@@ -79,6 +66,38 @@ const List = (props) => {
             <ActivityIndicator size='large' color='black' />
           </View>
         )}
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: `rgba(21, 24, 28, ${
+            state.isVisibleModal ? 0.85 : 0
+          })`,
+          width: state.isVisibleModal ? '100%' : 0,
+          height: state.isVisibleModal ? '100%' : 0,
+          zIndex: 5,
+        }}
+      >
+        <Modal
+          animationType='slide'
+          transparent={true}
+          visible={state.isVisibleModal}
+          onRequestClose={() => {
+            hideModal();
+          }}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              width: '90%',
+              height: '80%',
+              alignSelf: 'center',
+              marginVertical: 50,
+            }}
+          >
+            <Item item={state.modalData} isModal={true} hideModal={hideModal} />
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );

@@ -4,6 +4,8 @@ export const GET_MOVIES = 'FETCH_MOVIES';
 export const SET_SEARCH_STRING = 'SET_SEARCH_STRING';
 export const LOADING = 'LOADING';
 export const CLEAR_DATA = 'CLEAR_DATA';
+export const MODAL_DATA = 'MODAL_DATA';
+export const HIDE_DATA = 'HIDE_DATA'
 
 const API_URL = 'https://www.omdbapi.com/';
 const API_KEY = 'a1c1d7fe';
@@ -29,8 +31,7 @@ export const getMovies = (serchString, page = 1) => {
         console.log('Unable to fetch');
       }
     };
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const setSearchString = (searchString) => (dispatch) => {
@@ -53,3 +54,16 @@ export const setClearData = (data) => (dispatch) => {
     payload: data,
   });
 };
+
+export const setModalData = (data) => (dispatch) => {
+  dispatch({
+    type: MODAL_DATA,
+    payload: data,
+  });
+};
+
+export const hideModalData = () => (dispatch) => {
+    dispatch({
+      type: HIDE_DATA,
+    });
+  };

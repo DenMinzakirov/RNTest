@@ -17,7 +17,6 @@ const Main = (props) => {
 
   const handleInput = (text) => {
     setResult(text);
-    // clearing(true);
   };
   return (
     <SafeAreaView>
@@ -63,7 +62,6 @@ const Main = (props) => {
           containerStyle={{ width: '80%', marginVertical: 20, borderWidth: 1 }}
           disabled={!result}
           onPress={() => {
-            // clearing(false);
             fetchMovies();
             props.navigation.navigate('List');
           }}

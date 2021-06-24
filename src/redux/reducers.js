@@ -1,10 +1,25 @@
-import { GET_MOVIES, SET_SEARCH_STRING, LOADING, CLEAR_DATA } from './actions';
+import {
+  GET_MOVIES,
+  SET_SEARCH_STRING,
+  LOADING,
+  CLEAR_DATA,
+  MODAL_DATA,
+  HIDE_DATA,
+} from './actions';
 
 const initialState = {
   movies: [],
   searchString: '',
   loading: false,
   totalResults: 0,
+  isVisibleModal: false,
+  modalData: {
+    Poster: '',
+    Title: '',
+    Type: '',
+    Year: '',
+    imdbID: '',
+  },
 };
 
 function moviesReducer(state = initialState, action) {
@@ -24,6 +39,20 @@ function moviesReducer(state = initialState, action) {
       return { ...state, loading: action.payload };
     case CLEAR_DATA:
       return { ...state, movies: [] };
+    case MODAL_DATA:
+      return { ...state, modalData: action.payload, isVisibleModal: true };
+    case HIDE_DATA:
+      return {
+        ...state,
+        modalData: {
+          Poster: '',
+          Title: '',
+          Type: '',
+          Year: '',
+          imdbID: '',
+        },
+        isVisibleModal: false,
+      };
     default:
       return state;
   }
