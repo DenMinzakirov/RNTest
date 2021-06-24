@@ -18,7 +18,10 @@ const Item = (props) => {
       <View
         style={[
           styles.itemWrap,
-          { backgroundColor: props.isModal ? COLORS.GRAY : COLORS.WHITE },
+          {
+            backgroundColor: props.isModal ? COLORS.GRAY : COLORS.WHITE,
+            borderColor: props.isModal ? COLORS.GRAY : COLORS.LIGHT_GRAY,
+          },
         ]}
       >
         <Text style={styles.text}>
