@@ -10,7 +10,7 @@ const ModalItem = ({ state, hideModal }) => {
         styles.modalWrap,
         {
           backgroundColor: `rgba(21, 24, 28, ${
-            state.isVisibleModal ? 0.85 : 0
+            state.isVisibleModal ? 0.5 : 0
           })`,
           width: state.isVisibleModal ? '100%' : 0,
           height: state.isVisibleModal ? '100%' : 0,
