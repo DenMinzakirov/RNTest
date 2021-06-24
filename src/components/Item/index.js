@@ -19,7 +19,7 @@ const Item = (props) => {
         style={[
           styles.itemWrap,
           {
-            backgroundColor: props.isModal ? COLORS.GRAY : COLORS.WHITE,
+            backgroundColor: COLORS.WHITE,
             borderColor: props.isModal ? COLORS.GRAY : COLORS.LIGHT_GRAY,
           },
         ]}
