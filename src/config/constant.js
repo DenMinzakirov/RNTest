@@ -6,4 +6,6 @@ export const ROUTE_NAME = {
 export const COLORS = {
   BLUE: 'blue',
   GRAY: 'gray',
+  BLACK: 'black',
+  WHITE: 'white',
 };

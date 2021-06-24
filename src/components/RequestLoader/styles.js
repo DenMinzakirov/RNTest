@@ -1,9 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  tabStyle: {
-    height: '100%',
-    fontSize: 25,
-    paddingVertical: 6,
+  requestLoader: {
+    height: 40,
+    marginTop: 5,
   },
 });

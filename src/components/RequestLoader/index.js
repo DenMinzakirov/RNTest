@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
+import styles from './styles';
+import { COLORS } from '../../config/constant';
 
-const RequestLoader = (props) => {
+const RequestLoader = ({ showLoader }) => {
   return (
-    <View style={{ height: 40, marginTop: 5 }}>
-      {props.showLoader ? (
-        <ActivityIndicator size='large' color='black' />
+    <View style={styles.requestLoader}>
+      {showLoader ? (
+        <ActivityIndicator size='large' color={COLORS.BLACK} />
       ) : null}
     </View>
   );

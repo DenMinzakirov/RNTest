@@ -21,7 +21,6 @@ export const getMovies = (serchString, page = 1) => {
         });
       }
       const res = await axios.get(`${BASE_URL}`);
-      console.log('res', res);
       if (res.data) {
         dispatch({
           type: GET_MOVIES,
