@@ -1,39 +1,34 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import Main from './screens/Main';
 import List from './screens/List';
 import { store } from './redux/store';
 import IconHome from 'react-native-vector-icons/MaterialIcons';
+import { ROUTE_NAME, COLORS } from './config/constant';
+import styles from './styles';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
 export default App = () => {
-  console.log('store', store);
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName={'Main'}
+          initialRouteName={ROUTE_NAME.MAIN}
           tabBarOptions={{
             showIcon: true,
-            activeTintColor: 'blue',
-            inactiveTintColor: 'gray',
-            tabStyle: {
-              height: '100%',
-              fontSize: 25,
-              paddingVertical: 6,
-            },
+            activeTintColor: COLORS.BLUE,
+            inactiveTintColor: COLORS.GRAY,
+            tabStyle: styles.tabStyle,
           }}
           screenOptions={({ route }) => ({
-            tabBarIcon: ({ color, size }) => {
+            tabBarIcon: ({ color }) => {
               switch (route.name) {
-                case 'Main':
+                case ROUTE_NAME.MAIN:
                   return <IconHome name='home' size={30} color={color} />;
-                case 'List':
+                case ROUTE_NAME.LIST:
                   return <IconHome name='list' size={25} color={color} />;
                 default:
                   return null;
@@ -42,8 +37,8 @@ export default App = () => {
             animationEnabled: false,
           })}
         >
-          <Tab.Screen name='Main' component={Main} />
-          <Tab.Screen name='List' component={List} />
+          <Tab.Screen name={ROUTE_NAME.MAIN} component={Main} />
+          <Tab.Screen name={ROUTE_NAME.LIST} component={List} />
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
