@@ -3,7 +3,7 @@ import { SafeAreaView, Text, View, Alert } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './styles';
-import { ROUTE_NAME } from '../../config/constant';
+import { COLORS, ROUTE_NAME } from '../../config/constant';
 
 import { getMovies, setSearchString, setClearData } from '../../redux/actions';
 
@@ -18,16 +18,21 @@ const Main = (props) => {
   const handleInput = (text) => {
     setResult(text);
   };
+
+  const handleSubmit = () => {
+    fetchMovies();
+    props.navigation.navigate(ROUTE_NAME.LIST);
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.mainWrap}>
-        <Text style={styles.text}>Привет!</Text>
+        <Text style={styles.text}>Hello!</Text>
         <Text style={styles.text}>
-          Это прилажение поможет подобрать фильмы к просмотру
+          This application will help you choose movies to watch
         </Text>
-        <Text style={styles.text}>Вводите только английские слова</Text>
         <Input
-          placeholder='Введите название'
+          placeholder='Enter the name'
           containerStyle={styles.inputContayner}
           onChangeText={handleInput}
           value={result}
@@ -37,15 +42,14 @@ const Main = (props) => {
           onFocus={() => {
             clearing();
           }}
+          onSubmitEditing={handleSubmit}
         />
         <Button
-          title='Найти'
+          title='Search'
           containerStyle={styles.buttonContayner}
           disabled={!result}
-          onPress={() => {
-            fetchMovies();
-            props.navigation.navigate(ROUTE_NAME.LIST);
-          }}
+          onPress={handleSubmit}
+          buttonStyle={{backgroundColor: COLORS.BLUE}}
         />
       </View>
     </SafeAreaView>

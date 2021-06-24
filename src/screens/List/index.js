@@ -13,7 +13,6 @@ import Item from '../../components/Item';
 import styles from './styles';
 import { COLORS } from '../../config/constant';
 import ModalItem from '../../components/ModalItem';
-const noImg = require('../../../assets/not-available.png');
 
 const List = () => {
   const state = useSelector((state) => state.moviesReducer);
@@ -30,7 +29,7 @@ const List = () => {
 
   return (
     <SafeAreaView>
-      <View>
+      <View style={styles.noResultContayner}>
         {!state.loading ? (
           state.movies && state.movies.length ? (
             <FlatList
@@ -38,6 +37,11 @@ const List = () => {
               renderItem={(props) => <Item {...props} showModal={showModal} />}
               keyExtractor={(_, index) => index}
               ListFooterComponent={<RequestLoader showLoader={showLoader} />}
+              ListHeaderComponent={
+                <Text style={styles.totalText}>
+                  Total elements {state.totalResults}
+                </Text>
+              }
               onEndReachedThreshold={0.5}
               onEndReached={async () => {
                 setShowLoader(true);
