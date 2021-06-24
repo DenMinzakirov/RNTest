@@ -17,7 +17,6 @@ const DEFAULT_IMAGE = Image.resolveAssetSource(noImg).uri;
 const List = (props) => {
   console.log('List', props);
   const state = useSelector((state) => state.moviesReducer);
-  console.log(state);
   const dispatch = useDispatch();
   const fetchMovies = () =>
     dispatch(getMovies(state.searchString, state.movies.length / 10 + 1));
@@ -27,7 +26,6 @@ const List = (props) => {
   }, [state.movies]);
 
   const renderItem = (props) => {
-    console.log('renderItem', props);
     return (
       <View
         style={{
@@ -64,10 +62,7 @@ const List = (props) => {
               onEndReachedThreshold={0.5}
               onEndReached={async () => {
                 setShowLoader(true);
-                console.log('NEXT', state.totalResults / 10);
-                console.log('NEXT', state.movies.length / 10 + 1);
                 if (state.totalResults / 10 > state.movies.length / 10 + 1) {
-                  console.log('ZAPROS');
                   fetchMovies();
                 } else {
                   setShowLoader(false);

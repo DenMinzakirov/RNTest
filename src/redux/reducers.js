@@ -10,7 +10,6 @@ const initialState = {
 function moviesReducer(state = initialState, action) {
   switch (action.type) {
     case GET_MOVIES:
-      console.log('GET_MOVIES', state, action.payload);
       return {
         ...state,
         movies: action.payload.Search

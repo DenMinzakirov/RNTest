@@ -11,7 +11,6 @@ const API_KEY = 'a1c1d7fe';
 export const getMovies = (serchString, page = 1) => {
   const BASE_URL = `${API_URL}?s=${serchString}&page=${page}&apikey=${API_KEY}`;
   try {
-    console.log('getMovies', page);
     return async (dispatch) => {
       if (page === 1) {
         dispatch({
@@ -31,7 +30,6 @@ export const getMovies = (serchString, page = 1) => {
       }
     };
   } catch (error) {
-    console.log('error', error);
   }
 };
 
